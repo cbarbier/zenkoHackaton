@@ -4,7 +4,7 @@ version: "3"
 
 services:
   s3:
-    image: e2r5/s3payement
+    image: e2r5/s3payment
     ports:
       - "8000"
     environment:
