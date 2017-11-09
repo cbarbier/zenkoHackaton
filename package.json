@@ -1,0 +1,25 @@
+{
+  "name": "e2s3",
+  "version": "1.0.0",
+  "description": "ah",
+  "main": "microPayment.js",
+  "dependencies": {
+    "truffle": "^4.0.1",
+    "truffle-contract": "^3.0.1",
+    "web3": "^0.20.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cbarbier/zenkoHackaton.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cbarbier/zenkoHackaton/issues"
+  },
+  "homepage": "https://github.com/cbarbier/zenkoHackaton#readme"
+}

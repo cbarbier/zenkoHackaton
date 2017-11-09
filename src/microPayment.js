@@ -6,7 +6,7 @@
 //   By: cbarbier && fmaury                         +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2017/11/08 15:22:17 by cbarbier          #+#    #+#             //
-//   Updated: 2017/11/09 16:13:54 by cbarbier         ###   ########.fr       //
+//   Updated: 2017/11/09 18:16:29 by cbarbier         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -15,7 +15,7 @@ const port = 8001;
 
 const Web3 = require('web3');
 const contract = require("truffle-contract");
-const web3 = new Web3.providers.HttpProvider("http://localhost:8545");
+const web3 = new Web3.providers.HttpProvider("http://" + process.env.GETH_SERVER);
 
 var json = require("../build/contracts/Zenko.json");
 var MyContract = contract(json);
@@ -71,7 +71,7 @@ async function isAccess(url)
 
 const requestHandler = (request, response) => {
 	console.log(request.url)
-	response.end('Welcome on the node server managing the payment access of Cloud Server' + isAccess(request.url));
+	response.end('Welcome on the node server managing the payment access of Cloud Server ' + isAccess(request.url));
 }
 
 const server = http.createServer(requestHandler)
