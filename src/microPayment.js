@@ -6,12 +6,29 @@
 //   By: cbarbier && fmaury                         +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2017/11/08 15:22:17 by cbarbier          #+#    #+#             //
-//   Updated: 2017/11/08 15:29:07 by cbarbier         ###   ########.fr       //
+//   Updated: 2017/11/09 09:41:25 by bwaegene         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 const http = require('http');
 const port = 8001;
+
+const Web3 = require('web3');
+const contract = require("truffle-contract");
+const web3 = new Web3.providers.HttpProvider("http://localhost:8545");
+
+var json = require("../build/contracts/Zenko.json");
+var MyContract = contract(json);
+MyContract.setProvider(web3);
+
+function access(id, price) {
+    MyContract.deployed().then(function(instance) {
+        var deployed = instance;
+        return instance.access.call(id, price, {from: MyContract.web3.eth.coinbase});
+    }).then(function(result) {
+        console.log(result);
+    });
+}
 
 function is_good_operation(ope)
 {
@@ -36,10 +53,8 @@ function isAccess(url)
 	if (!is_good_operation(res[5]))
 		return (405);
 	price = getPrice(res[5], parseInt(res[7]));
-//	var MyContract = web3.eth.contract(abi);
-//	var myContractInstance = MyContract.at(0xe209cf13b89dba598ad472947c8ec0ebe7361ca5a);
-//	if (!access(res[2], price))
-//		return (400);
+	if (!access(res[2], price))
+		return (400);
 	return (200);
 }
 
