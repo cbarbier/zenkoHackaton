@@ -1,0 +1,35 @@
+---
+
+version: "3"
+
+services:
+  s3:
+    image: e2r5/s3payement
+    ports:
+      - "8000"
+    environment:
+      MICROPAYMENT_SERVER: micropayment:8001
+
+  lb:
+    image: zenko/loadbalancer
+    ports:
+      - "80:80"
+    environment:
+      LISTEN_PORT: 80
+      UPSTREAM_SERVER: s3:8000
+
+  micropayment:
+    image: e2r5/micropayment
+    ports:
+      - "8001"
+    environment:
+      GETH_SERVER: geth:8545
+
+  geth:
+    image: ethereum/client-go
+    command: geth --testnet --rpc --rpcaddr 0.0.0.0 --mine --password <(echo -n $WALLET_PASSWD) --unlock 0 console
+    ports:
+      - "8545"
+      - "30303"
+    environment:
+      WALLET_PASSWD: "trololol"
