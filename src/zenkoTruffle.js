@@ -7,7 +7,7 @@ var MyContract = contract(json);
 MyContract.setProvider(web3);
 
 function balance(id) {
-    MyContract.deployed().then(function(instance) {
+    return MyContract.deployed().then(function(instance) {
         var deployed = instance;
         return instance.getBalance.call(id);
     }).then(function(result) {
@@ -18,7 +18,7 @@ function balance(id) {
 
 // TODO Verify price unit consitency with acces()
 function deposit(id, price) {
-    MyContract.deployed().then(function(instance) {
+    return MyContract.deployed().then(function(instance) {
         var deployed = instance;
         return instance.deposit(id, {from: MyContract.web3.eth.coinbase, value: price} );
     }).then(function(result) {
@@ -27,17 +27,20 @@ function deposit(id, price) {
 }
 
 function access(id, price) {
-    MyContract.deployed().then(function(instance) {
+    return MyContract.deployed().then(function(instance) {
         var deployed = instance;
-        return instance.access.call(id, price, {from: MyContract.web3.eth.coinbase});
+        return instance.access(id, price, {from: MyContract.web3.eth.coinbase});
     }).then(function(result) {
         console.log(result);
     });
 }
 
-var id = "e2r5";
-balance(id);
-deposit(id, 512);
-balance(id);
-access(id, 512);
-access(id, 51200000000000000);
+var id = "79a59df900b949e55d96a1e698fbacedfd6e09d98eacf8f8d5218e7cd47ef2be";
+//balance(id);
+async function main () {
+//await deposit(id, 512);
+await access(id, 32090010);
+await balance(id);
+};
+main();
+//access(id, 51200000000000000);

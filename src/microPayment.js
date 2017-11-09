@@ -6,7 +6,7 @@
 //   By: cbarbier && fmaury                         +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2017/11/08 15:22:17 by cbarbier          #+#    #+#             //
-//   Updated: 2017/11/09 09:41:25 by bwaegene         ###   ########.fr       //
+//   Updated: 2017/11/09 16:13:54 by cbarbier         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -21,12 +21,20 @@ var json = require("../build/contracts/Zenko.json");
 var MyContract = contract(json);
 MyContract.setProvider(web3);
 
-function access(id, price) {
-    MyContract.deployed().then(function(instance) {
+function balance(id) {
+    return MyContract.deployed().then(function(instance) {
         var deployed = instance;
-        return instance.access.call(id, price, {from: MyContract.web3.eth.coinbase});
+        return instance.getBalance.call(id);
     }).then(function(result) {
         console.log(result);
+        return;
+    });
+}
+
+function access(id, price) {
+    return MyContract.deployed().then(function(instance) {
+        var deployed = instance;
+        return instance.access(id, price, {from: MyContract.web3.eth.coinbase});
     });
 }
 
@@ -44,7 +52,7 @@ function	getPrice(meth, size)
 	return (tabPrice[meth] * size);
 }
 
-function isAccess(url)
+async function isAccess(url)
 {
 	let	price;
 	var res = url.split("/");
@@ -53,8 +61,11 @@ function isAccess(url)
 	if (!is_good_operation(res[5]))
 		return (405);
 	price = getPrice(res[5], parseInt(res[7]));
-	if (!access(res[2], price))
+	await balance(res[3]);
+	console.log("id : " + res[3]);
+	if (! await access(res[3], price))
 		return (400);
+	await balance(res[3]);
 	return (200);
 }
 
