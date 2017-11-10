@@ -27,9 +27,9 @@ services:
 
   geth:
     image: ethereum/client-go
-    command: geth --testnet --rpc --rpcaddr 0.0.0.0 --mine --password <(echo -n $WALLET_PASSWD) --unlock 0 console
+    command: --testnet --fast --cache=512 --rpc --rpcaddr 0.0.0.0 --mine --password /root/passwd --unlock 0
+    volumes:
+      - "/geth_data:/root"
     ports:
       - "8545"
       - "30303"
-    environment:
-      WALLET_PASSWD: "trololol"

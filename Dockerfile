@@ -1,9 +1,11 @@
 #dockerfile 
-FROM alpine:3.6
+FROM node:alpine
 MAINTAINER e2r5
 COPY . /opt
 RUN apk add --update git nodejs nodejs-npm
 WORKDIR /opt
 RUN npm install
-ENTRYPOINT node microPayment.js
+RUN npm install -g truffle
+RUN truffule compile
+ENTRYPOINT truffule migrate && node src/microPayment.js
 EXPOSE 8001
