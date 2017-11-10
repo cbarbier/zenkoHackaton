@@ -1,6 +1,7 @@
 const Web3 = require('web3');
 const contract = require("truffle-contract");
-const web3 = new Web3.providers.HttpProvider("http://localhost:8545");
+const server = process.env.GETH_SERVER;
+const web3 = new Web3.providers.HttpProvider("http://" + server);
 
 var json = require("../build/contracts/Zenko.json");
 var MyContract = contract(json);
@@ -35,12 +36,23 @@ function access(id, price) {
     });
 }
 
-var id = "79a59df900b949e55d96a1e698fbacedfd6e09d98eacf8f8d5218e7cd47ef2be";
-//balance(id);
-async function main () {
-//await deposit(id, 512);
-await access(id, 32090010);
-await balance(id);
+
+// var id = "79a59df900b949e55d96a1e698fbacedfd6e09d98eacf8f8d5218e7cd47ef2be";
+var id = process.env.ID;
+function main () {
+    if (process.argv[1] == "balance")
+        balance(id);
+    else if (process.argv[1] == "deposit" && process.argv[2])
+        deposit(process.argv[1], process.argv[2]);
+    else if (process.argv[1] == "deposit" && process.argv[2])
+        deposit(process.argv[1], process.argv[2]);
+    else
+        process.exit(1);
 };
+
 main();
+//balance(id);
+//await deposit(id, 512);
+// await access(id, 32090010);
+// await balance(id);
 //access(id, 51200000000000000);
