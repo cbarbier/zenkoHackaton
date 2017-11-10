@@ -40,12 +40,12 @@ function access(id, price) {
 // var id = "79a59df900b949e55d96a1e698fbacedfd6e09d98eacf8f8d5218e7cd47ef2be";
 var id = process.env.ID;
 function main () {
-    if (process.argv[1] == "balance")
+    if (process.argv[2] == "balance")
         balance(id);
-    else if (process.argv[1] == "deposit" && process.argv[2])
-        deposit(process.argv[1], process.argv[2]);
-    else if (process.argv[1] == "deposit" && process.argv[2])
-        deposit(process.argv[1], process.argv[2]);
+    else if (process.argv[2] == "deposit" && process.argv[3])
+        deposit(id, process.argv[3]);
+    else if (process.argv[2] == "access" && process.argv[3])
+        access(id, process.argv[3]);
     else
         process.exit(1);
 };
